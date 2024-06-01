@@ -1,7 +1,9 @@
 # layerzero-rfp-checker
 ## Установка
 pip install -r 'requirements.txt'
+
 Адреса кошельков вставляем в evm.txt
+
 Для запуска main.py
 ## Возможности
 Проверяет ваши адреса по спискам данных рфд дропов от Layerzero:
