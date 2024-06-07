@@ -3,7 +3,7 @@ import pandas as pd
 from tabulate import tabulate
 from tqdm import tqdm
 
-def find_address_info(search_file, target_file_merkly, target_file_holograph, target_file_altitude, target_file_dappgate, target_file_level_bridge, target_file_l2telegraph, target_file_omnibase, target_file_omnihub, target_file_omnisea, target_file_whale, target_file_nomis, target_file_dexalot, target_file_dfk, target_file_harmony, target_file_l2marathon, target_file_mavia, target_file_orderly, target_file_superform, target_file_angle_protocol, target_file_canto, target_file_ethena, target_file_frax, target_file_gaszip, target_file_kresko, target_file_maverick, target_file_metastreet, target_file_omni_x, target_file_polyhedra, target_file_shimmer, target_file_swell, target_file_telos, target_file_tenet, target_file_tevaera, target_file_venus, target_file_woofi, output_file, show_zero_eligible=False):
+def find_address_info(search_file, target_file_sybils, target_file_merkly, target_file_holograph, target_file_altitude, target_file_dappgate, target_file_level_bridge, target_file_l2telegraph, target_file_omnibase, target_file_omnihub, target_file_omnisea, target_file_whale, target_file_nomis, target_file_dexalot, target_file_dfk, target_file_harmony, target_file_l2marathon, target_file_mavia, target_file_orderly, target_file_superform, target_file_angle_protocol, target_file_canto, target_file_ethena, target_file_frax, target_file_gaszip, target_file_kresko, target_file_maverick, target_file_metastreet, target_file_omni_x, target_file_polyhedra, target_file_shimmer, target_file_swell, target_file_telos, target_file_tenet, target_file_tevaera, target_file_venus, target_file_woofi, target_file_l2pass, target_file_core, target_file_beam, target_file_gameswift, target_file_dappradar, target_file_gmx, target_file_layer3, target_file_omnicat, target_file_pancakeswap, target_file_traderjoe, target_file_radiant, target_file_etherfi, output_file, show_zero_eligible=False, show_sybils=False):
     def load_file(file_path):
         with open(file_path, 'r') as file:
             return file.readlines()
@@ -23,6 +23,13 @@ def find_address_info(search_file, target_file_merkly, target_file_holograph, ta
         pass
     else:
         os.mkdir("result")
+        
+    if show_sybils == False:
+        sybils = '-'
+    else:
+        sybils = 'Sybil'
+    target_lines_sybils = load_file(target_file_sybils)
+    sybil_data = set(line.strip().lower() for line in target_lines_sybils)
     target_lines_merkly = load_file(target_file_merkly)
     target_lines_holograph = load_file(target_file_holograph)
     target_lines_altitude = load_file(target_file_altitude)
@@ -58,7 +65,20 @@ def find_address_info(search_file, target_file_merkly, target_file_holograph, ta
     target_lines_tevaera = load_file(target_file_tevaera)
     target_lines_venus = load_file(target_file_venus)
     target_lines_woofi = load_file(target_file_woofi)
+    target_lines_l2pass = load_file(target_file_l2pass)
+    target_lines_gameswift = load_file(target_file_gameswift)
+    target_lines_core = load_file(target_file_core)
+    target_lines_beam = load_file(target_file_beam)
+    target_lines_dappradar = load_file(target_file_dappradar)
+    target_lines_gmx = load_file(target_file_gmx)
+    target_lines_layer3 = load_file(target_file_layer3)
+    target_lines_omnicat = load_file(target_file_omnicat)
+    target_lines_pancakeswap = load_file(target_file_pancakeswap)
+    target_lines_traderjoe = load_file(target_file_traderjoe)
+    target_lines_radiant = load_file(target_file_radiant)
+    target_lines_etherfi = load_file(target_file_etherfi)
 
+    sybil_data = process_line_to_dict(target_lines_sybils, key_index=0)
     merkly_points = process_line_to_dict(target_lines_merkly, key_index=0, value_index=1)
     l2telegraph_tier = process_line_to_dict(target_lines_l2telegraph, key_index=0, value_index=1)
     holograph_percentages = process_line_to_dict(target_lines_holograph, key_index=0, value_index=4)
@@ -94,6 +114,18 @@ def find_address_info(search_file, target_file_merkly, target_file_holograph, ta
     venus_data = process_line_to_dict(target_lines_venus, key_index=0)
     woofi_percentages = process_line_to_dict(target_lines_woofi, key_index=0, value_index=1)
     metastreet_percentages = process_line_to_dict(target_lines_metastreet, key_index=0, value_index=1)
+    beam_data = process_line_to_dict(target_lines_beam, key_index=0)
+    core_percentages = process_line_to_dict(target_lines_core, key_index=0, value_index=1)
+    gameswift_percentages = process_line_to_dict(target_lines_gameswift, key_index=0, value_index=3)
+    l2pass_data = process_line_to_dict(target_lines_l2pass, key_index=0)
+    dappradar_data = process_line_to_dict(target_lines_dappradar, key_index=0)
+    layer3_percentages = process_line_to_dict(target_lines_layer3, key_index=0, value_index=2)
+    omnicat_percentages = process_line_to_dict(target_lines_omnicat, key_index=0, value_index=1)
+    traderjoe_percentages = process_line_to_dict(target_lines_traderjoe, key_index=0, value_index=1)
+    gmx_percentages = process_line_to_dict(target_lines_gmx, key_index=0, value_index=6)
+    pancakeswap_percentages = process_line_to_dict(target_lines_pancakeswap, key_index=0, value_index=1)
+    etherfi_percentages = process_line_to_dict(target_lines_etherfi, key_index=0, value_index=1)
+    radiant_percentages = process_line_to_dict(target_lines_radiant, key_index=0, value_index=2)
     
     results = []
     
@@ -104,6 +136,7 @@ def find_address_info(search_file, target_file_merkly, target_file_holograph, ta
             for search_string in search:
                 search_string = search_string.strip().lower()
                 
+                is_sybil = "Sybil" if search_string in sybil_data else "-"
                 merkly_point = merkly_points.get(search_string, '0')
                 holograph_percentage = holograph_percentages.get(search_string, '0')
                 altitude_percentage = altitude_percentages.get(search_string, '0')
@@ -139,8 +172,20 @@ def find_address_info(search_file, target_file_merkly, target_file_holograph, ta
                 venus_value = venus_data.get(search_string, 'Not Eligible')
                 woofi_percentage = woofi_percentages.get(search_string, '0')
                 metastreet_percentage = metastreet_percentages.get(search_string, '0')
+                beam_value = beam_data.get(search_string, 'Not Eligible')
+                core_percentage = core_percentages.get(search_string, '0')
+                gameswift_percentage = gameswift_percentages.get(search_string, '0')
+                l2pass_value = l2pass_data.get(search_string, 'Not Eligible')
+                dappradar_value = dappradar_data.get(search_string, 'Not Eligible')
+                layer3_percentage = layer3_percentages.get(search_string, '0')
+                omnicat_percentage = omnicat_percentages.get(search_string, '0')
+                traderjoe_percentage = traderjoe_percentages.get(search_string, '0')
+                gmx_percentage = gmx_percentages.get(search_string, '0')
+                pancakeswap_percentage = pancakeswap_percentages.get(search_string, '0')
+                etherfi_percentage = etherfi_percentages.get(search_string, '0')
+                radiant_percentage = radiant_percentages.get(search_string, '0')
                 
-                if show_zero_eligible or any([
+                eligible_conditions = [
                     merkly_point != '0', 
                     holograph_percentage != '0', 
                     altitude_percentage != '0', 
@@ -175,10 +220,27 @@ def find_address_info(search_file, target_file_merkly, target_file_holograph, ta
                     tevaera_percentage != '0',
                     venus_value != 'Not Eligible',
                     woofi_percentage != '0',
-                    metastreet_percentage != '0'
-                ]):
+                    metastreet_percentage != '0',
+                    beam_value != 'Not Eligible',
+                    core_percentage != '0',
+                    gameswift_percentage != '0',
+                    l2pass_value != 'Not Eligible',
+                    dappradar_value != 'Not Eligible',
+                    layer3_percentage != '0',
+                    omnicat_percentage != '0',
+                    traderjoe_percentage != '0',
+                    gmx_percentage != '0',
+                    pancakeswap_percentage != '0',
+                    etherfi_percentage != '0',
+                    radiant_percentage != '0'
+                ]
+                
+                if is_sybil == "Sybil" and not show_sybils:
+                    continue
+                elif show_zero_eligible or any(eligible_conditions):
                     results.append([
                         search_string,
+                        is_sybil,
                         merkly_point,
                         holograph_percentage,
                         altitude_percentage,
@@ -213,31 +275,49 @@ def find_address_info(search_file, target_file_merkly, target_file_holograph, ta
                         tevaera_percentage,
                         venus_value,
                         woofi_percentage,
-                        metastreet_percentage
+                        metastreet_percentage,
+                        beam_value,
+                        core_percentage,
+                        gameswift_percentage,
+                        l2pass_value,
+                        dappradar_value,
+                        layer3_percentage,
+                        omnicat_percentage,
+                        traderjoe_percentage,
+                        gmx_percentage,
+                        pancakeswap_percentage,
+                        etherfi_percentage,
+                        radiant_percentage
                     ])
                 pbar.update(1)
                 
     df = pd.DataFrame(results, columns=[
-        'Address', 'Merkly Points', 'Percent Holograph', 'Percent Altitude', 'Dappgate', 'Level Bridge', 
+        'Address', 'Sybil', 'Merkly Points', 'Percent Holograph', 'Percent Altitude', 'Dappgate', 'Level Bridge', 
         'Coefficient Omnibase', 'Percent Omnihub', 'Omnisea', 'TXS Whale', 'Percent Nomis', 'L2telegraph',
         'Dexalot', 'Percent DFK', 'Harmony', 'TXS L2marathon', 'Mavia', 'Percent Orderly', 'Percent Superform',
         'Percent Angle Protocol', 'Percent Canto', 'Percent Ethena', 'Percent Frax', 'Points Gaszip', 'Kresko',
         'Percent Maverick', 'Percent Omni X', 'Percent Polyhedra', 'Percent Shimmer', 'Percent Swell', 'Telos',
-        'Percent Tenet', 'Percent Tevaera', 'Venus', 'Percent Woofi', 'Percent Metastreet'    
+        'Percent Tenet', 'Percent Tevaera', 'Venus', 'Percent Woofi', 'Percent Metastreet', 'Beam', 'Core',
+        'Percent Gameswift', 'L2Pass', 'Dappradar', 'Percentage Layer3', 'Percentage Omnicat', 'Percent Traderjoe',
+        'Percent GMX', 'Percent Pancakeswap', 'Percent Etherfi', 'Percent Radiant'
     ])
     
     with open(output_file, 'w') as output:
         output.write(tabulate(df, headers='keys', tablefmt='pretty', showindex=False))
         
     print('Успешно! TG Channel: @crypto_armored. Результат сохранен в result/result.txt')
+    input()
 
 show_zero_eligible = input("Отобразить адреса, которые не элигибл ни к одному из дропов? (Yes/No): ").strip().lower() == 'yes'
+show_sybils = input("Отобразить адреса, которые есть в сибилл списке? (Yes/No): ").strip().lower() == 'yes'
 
 find_address_info(
-    'user_data/evm.txt', 'checkers/merkly.txt', 'checkers/holograph.txt', 'checkers/altitude.txt', 'checkers/dappgate.txt', 'checkers/lvl-bridge.txt',
+    'user_data/evm.txt', 'checkers/sybil_list.txt', 'checkers/merkly.txt', 'checkers/holograph.txt', 'checkers/altitude.txt', 'checkers/dappgate.txt', 'checkers/lvl-bridge.txt',
     'checkers/l2telegraph.txt', 'checkers/omnibase.txt', 'checkers/omnihub.txt', 'checkers/omnisea.txt', 'checkers/whale.txt', 'checkers/nomis.txt', 
     'checkers/dexalot.txt', 'checkers/dfk.txt', 'checkers/harmony.txt', 'checkers/l2marathon.txt', 'checkers/mavia.txt', 'checkers/orderly.txt', 'checkers/superform.txt',
     'checkers/angle_protocol.txt', 'checkers/canto.txt', 'checkers/ethena.txt', 'checkers/frax.txt', 'checkers/gaszip.txt', 'checkers/kresko.txt', 'checkers/maverick.txt',
     'checkers/metastreet.txt', 'checkers/omni_x.txt', 'checkers/polyhedra.txt', 'checkers/shimmer.txt', 'checkers/swell.txt', 'checkers/telos.txt', 'checkers/tenet.txt',
-    'checkers/tevaera.txt', 'checkers/venus.txt', 'checkers/woofi.txt', 'result/result.txt', show_zero_eligible
+    'checkers/tevaera.txt', 'checkers/venus.txt', 'checkers/woofi.txt', 'checkers/l2pass.txt', 'checkers/core.txt', 'checkers/beam.txt', 'checkers/gameswift.txt', 
+    'checkers/dappradar.txt', 'checkers/gmx.txt', 'checkers/layer3.txt', 'checkers/omnicat.txt', 'checkers/pancakeswap.txt', 'checkers/traderjoe.txt', 'checkers/radiant.txt',
+    'checkers/etherfi.txt', 'result/result.txt', show_zero_eligible, show_sybils
 )
